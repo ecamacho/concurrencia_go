@@ -1,0 +1,27 @@
+package main
+
+import (
+	"fmt"
+	"time"
+)
+// START1 OMIT
+func main() {
+	mesa := make(chan string)
+	quit := make(chan bool)	
+	go jugador(mesa, quit, "ping")
+	go jugador(mesa, quit, "pong")
+	mesa <- "start"
+	<- quit
+	fmt.Println("El partido ha terminado")
+}
+
+func jugador(mesa chan string, quit chan bool, mensaje string) {
+	for i := 0; i < 5; i++ {
+		msg := <- mesa
+		fmt.Println(msg)
+		time.Sleep(time.Second)
+		mesa <- mensaje
+	}
+	quit <- true
+}
+// STOP1 OMIT

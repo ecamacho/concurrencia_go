@@ -1,0 +1,17 @@
+package main
+
+import (
+	"fmt"
+	"net/http"
+	
+)
+
+func handler(w http.ResponseWriter, r *http.Request) {
+  fmt.Fprintf(w, "Hola desde web petición recibida en %s", r.URL.Path)  
+}
+
+func main() {
+  http.HandleFunc("/", handler)
+  fmt.Println("Escuchando en puerto 5252")
+  http.ListenAndServe(":5252", nil)
+}

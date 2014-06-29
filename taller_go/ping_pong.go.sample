@@ -1,0 +1,24 @@
+package main
+
+import (
+	"fmt"
+	"time"
+)
+// START1 OMIT
+func main() {
+	mesa := make(chan string) 	
+	go jugador(mesa, "ping")
+	go jugador(mesa, "pong")
+	mesa <- "start"
+	time.Sleep(time.Second * 10)
+}
+
+func jugador(mesa chan string, mensaje string) {
+	for {
+		msg := <- mesa
+		fmt.Println(msg)
+		time.Sleep(time.Second)
+		mesa <- mensaje
+	}
+}
+// STOP1 OMIT

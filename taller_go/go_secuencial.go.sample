@@ -1,0 +1,26 @@
+package main
+import (
+	"fmt"
+	"time"
+	)
+
+// START1 OMIT
+func main() {
+	fmt.Println("iniciando")
+	printForward()
+	printBackwards()
+	fmt.Println("terminando")	
+}
+func printForward() {
+	for i := 0; i <10; i++ {
+		fmt.Println(i)
+		time.Sleep(time.Millisecond)
+	}
+}
+func printBackwards() {
+	for i := 10; i >= 0; i-- {
+		fmt.Println(i)
+		time.Sleep(time.Millisecond)
+	}	
+}
+// STOP1 OMIT

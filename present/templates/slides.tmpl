@@ -1,0 +1,59 @@
+{/* This is the slide template. It defines how presentations are formatted. */}
+
+{{define "root"}}
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{.Title}}</title>
+    <meta charset='utf-8'>
+    <script src='/static/slides.js'></script>
+  </head>
+
+  <body style='display: none'>
+
+    <section class='slides layout-widescreen'>
+      
+      <article style="background-image: url('sg_background.jpg');">
+
+        <h1 style="color:white; margin-right: 0px; margin-left: 300px; width: 600px; margin-top:30px;word-wrap:break-word;text-align:right">{{.Title}}</h1>
+        {{with .Subtitle}}<h3 style="color:white; margin-right: 0px; margin-left: 500px; width: 900px; margin-top:40px;">{{.}}</h3>{{end}}
+        {{if not .Time.IsZero}}<h3>{{.Time.Format "2 January 2006"}}</h3>{{end}}
+        {{range .Authors}}
+          <div class="presenter" style="color:white; margin-right: 0px; margin-left: 500px; width: 900px;">
+            {{range .TextElem}}{{elem $.Template .}}{{end}}
+          </div>
+        {{end}}
+      </article>
+      
+  {{range $i, $s := .Sections}}
+  <!-- start of slide {{$s.Number}} -->
+      <article>
+      {{if $s.Elem}}
+        <h3>{{$s.Title}}</h3>
+        {{range $s.Elem}}{{elem $.Template .}}{{end}}
+      {{else}}
+        <h2>{{$s.Title}}</h2>
+      {{end}}
+      </article>
+  <!-- end of slide {{$i}} -->
+  {{end}}{{/* of Slide block */}}
+
+      <article style="background-image: url('sg_background.jpg');">
+        <h1 style="color:white; margin-right: 0px; margin-left: 700px; width: 900px; margin-top:40px;">Gracias</h1>
+       
+          <h3 style="color:white; margin-right: 0px; margin-left: 600px; width: 900px;">
+            Erick Camacho @ecamacho
+          </h3>
+       
+      </article>
+
+  </body>
+  {{if .PlayEnabled}}
+  <script src='/play.js'></script>
+  {{end}}
+</html>
+{{end}}
+
+{{define "newline"}}
+<br>
+{{end}}

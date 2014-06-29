@@ -1,0 +1,313 @@
+Aplicaciones concurrentes con Go
+Erick Camacho @ecamacho
+
+
+* Introducción
+
+* Material
+
+.link https://www.youtube.com/watch?v=KJEBCOJ_jaU Video de la charla 
+
+
+* Historia
+
+- Lenguaje creado y mantenido por Google 
+- Creado en 2007 por Robert Griesemer, Robert Pike y Kent Thompson
+- Publicado como Open Source en 2009
+- Versión 1.0 publicada en 2012
+
+.image taller_go/gopherbw.png
+
+* Historia
+
+.image taller_go/authors.png
+
+* Historia
+
+"Go isn't intended to replace Java, C++, or any other language. It was designed in response to some of the problems we encountered while writing large systems for modern hardware. The result seems to work well as a general-purpose language, one that many programmers have found delightful to use."
+Rob Pike
+
+* ¿Qué es?
+
+- Una plataforma: lenguaje y herramientas
+- Fácil de aprender
+- Tipado Estático
+- Eficiente y rápido
+- Compilado, genera un binario con todas sus dependencias
+
+
+.image taller_go/aegopher.jpg
+
+* ¿Qué es?
+
+"The goal was comprehensibility. The features of Go are intended to be orthogonal so that when they're combined, they interact in clear, predictable ways"
+Rob Pike
+
+* ¿Qué es?
+
+@cristalopes
+
+.image taller_go/cristalopes.png
+
+* ¿Qué es?
+
+.image taller_go/tweet.png
+
+* ¿Quién?
+
+.image taller_go/who.png
+
+* Primeros pasos
+
+
+* Hola mundo
+
+Crea un archivo llamado hello.go, pon este código:
+
+.play taller_go/hello.go.sample
+
+En línea de comandos:
+
+  go run hello.go
+
+
+* Variables y Tipos
+
+Las variables se declaran de esta forma:
+
+var nombre tipo = valor
+
+
+.play taller_go/variables.go.sample
+
+* Variables
+
+La declaración del tipo es opcional, el compilador lo infiere.
+Aún más, la palabra var es opcional, se puede obviar pero es necesario usar
+":=" en lugar de "=" para la asignación de un valor.
+
+.play taller_go/variables_simples.go.sample
+
+
+* Ciclo for
+
+Existe el "for" como en otros lenguajes
+
+
+.play taller_go/for.go.sample
+
+* If
+
+Muy parecido al que seguramente ya conocen.
+
+
+.play taller_go/if.go.sample
+
+
+* Arrays
+
+
+.play taller_go/arrays_simple.go.sample
+
+* Mapas
+
+Colección no ordenada de claves-valores.
+Permiten asociar un valor a una clave, típicamente a un string.
+
+.play taller_go/mapas.go.sample
+
+* Funciones
+
+* Declaración
+
+La sintaxis es
+func nombre(parametros) valores de retorno
+
+.play taller_go/funciones.go.sample
+
+
+* Valores de retorno
+
+Las funciones pueden tener múltiples valores de retorno y pueden ser nombrados
+
+.play taller_go/funciones_retorno.go.sample
+
+* Closures
+
+Go soporta declarar funciones dentro de funciones
+
+.play taller_go/closures.go.sample
+
+* Concurrencia
+
+* Objetivo
+
+"El mundo es paralelo
+
+- Multicore.
+
+- Redes.
+
+- La nube.
+
+- Carga de usuarios
+
+Nuestra tecnología debe ayudar"
+
+Rob Pike
+
+* ¿Qué es?
+
+Imagina que tienes que realizar una tarea
+
+.image taller_go/gopher_conc01.jpg
+
+* ¿Qué es?
+
+Concurrencia es poder dividirla en varias tareas independientes. 
+
+.image taller_go/gopher_conc02.jpg
+
+* ¿Qué es?
+
+Hay muchas formas de hacer esa división, unas más complejas que otras.
+Lo que se busca es llevar a cabo la tarea de forma más eficiente.
+
+.image taller_go/gopher_conc03.jpg
+
+* ¿Qué es?
+
+La concurrencia no es lo mismo que el paralelismo, pero permite usarlo.
+
+.image taller_go/gopher_conc04.jpg
+
+* Concurrencia vs Paralelismo
+
+Concurrencia es cómo estructuras tu programa, paralelismo es cómo se ejecuta.
+
+La concurrencia te permite estructurar una solución que puede (no necesariamente) ser paralelizable.
+
+Esta estructuración se basa en descomponer en tareas independientes un problema.
+
+* Concurrencia en Go 
+
+Go fue pensado y diseñado para soportar Concurrencia.
+
+- Modelo sencillo 
+
+- Fácil de entender
+
+- Fácil de usar
+
+- Sin los típicos problemas de manejar paralelismo (bloqueos, semáforos, threads, etc)
+
+- Basado en el trabajo de Hoare "Communicating Sequential Processes (CSP)" de 1978
+
+* Concurrencia en Go 
+
+Empecemos con unas funciones secuenciales:
+
+.play taller_go/go_secuencial.go.sample /START1/,/STOP1/
+
+* Go Rutinas
+
+Go soporta el ejecutar funciones de forma asíncrona, sin esperar a que contesten.
+
+.play taller_go/go_rutinas.go.sample /START1/,/STOP1/
+
+* Go Rutinas
+
+Una Go rutina es una función independiente.
+
+Tiene su propio stack.
+
+Ocupa pocos recursos (4k en Go 1.3), por lo que puedes tener cientos miles.
+
+No son un Thread.
+
+De hecho, varias Go rutinas pueden usar el mismo Thread.
+
+Si tienes varios Cores/CPUs se ejecutarán de forma paralela.
+
+* Canales
+
+Para tener verdadera concurrencia, las go rutinas deben ser capaces de comunicarse entre sí.
+
+Go logra eso a través de canales
+
+.play taller_go/canales.go.sample /START1/,/STOP1/
+
+* Canales
+
+Las operaciones de enviar y recibir son bloqueantes.
+
+Por ello, los canales sirven para sincronizar rutinas concurrentes en Go.
+
+(Existen también buffered channels que no bloquean y se comportan más como los 
+inboxes de Erlang o de Scala/Akka).
+
+El principio de Go es "No comuniques compartiendo memoria, comparte memoria comunicando".
+
+* Canales
+
+Sincronizando go rutinas
+
+.image taller_go/gophereartrumpet.jpg
+
+
+* Canales
+
+Una forma de usarlos es que corran indefinidamente, como si fueran un servicio esperando peticiones.
+
+.image taller_go/race.png
+
+* Canales
+.play taller_go/canales_02.go.sample /START1/,/STOP1/
+
+* Canales
+Patrón generador: la función que publica mensajes, es la que crea el canal
+
+.play taller_go/channel_generator.go.sample /START1/,/STOP1/
+
+
+* Canales
+
+Ping Pong
+.play taller_go/ping_pong.go.sample /START1/,/STOP1/
+
+* Canales
+
+Canal "quit": para indicar cuando ha terminado la go rutina
+
+.play taller_go/ping_pong_quit.go.sample /START1/,/STOP1/
+
+* Select
+
+El Select es como un switch, pero que espera mensajes en canales. 
+Su finalidad es comunicar, no comparar valores.
+
+.play taller_go/select01.go.sample /START1/,/STOP1/
+
+* Timeouts
+Puedes poner timeouts a los Select
+
+.play taller_go/select02.go.sample /START1/,/STOP1/
+
+
+* Otros
+Soporte para apps webs 
+
+.play taller_go/web.go.sample
+
+* Conclusiones
+
+- Go es concurrente
+- La concurrencia permite paralelización
+- Puedes construir apps concurrentes sin locks, waits, callbacks, threads.
+
+Más info: 
+
+.link http://vimeo.com/49718712 Rob Pike "Concurrency is not parallelism"
+.link http://www.youtube.com/watch?v=f6kdp27TYZs Rob Pike "Go Concurrency patterns"
+.link http://www.youtube.com/watch?v=QDDwwePbDtw Sameer Ajmani "Advanced Concurrency patterns"
+

@@ -1,0 +1,12 @@
+package main
+
+import "fmt"
+
+func main() {
+	var elementos map[string]string
+	elementos = make(map[string]string)
+	elementos["H"] = "Hidrógeno"
+	elementos["He"] = "Helio"
+	elementos["Li"] = "Litio"
+	fmt.Println(elementos["Li"])
+}

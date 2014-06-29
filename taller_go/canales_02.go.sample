@@ -1,0 +1,23 @@
+package main
+
+import (
+	"fmt"
+	"time"
+)
+
+// START1 OMIT
+func main() {
+	c := make(chan string)		
+	go printer(c)
+	for i := 0; i < 7; i++ {
+		fmt.Println("mensaje", <- c)
+	}		
+}
+
+func printer (c chan string) {		
+	for i := 0; ; i++ {
+		c <- fmt.Sprintf("Mensaje %d", i)
+		time.Sleep(time.Second)
+	}	
+}
+// STOP1 OMIT

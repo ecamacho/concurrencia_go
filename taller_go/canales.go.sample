@@ -1,0 +1,22 @@
+
+package main
+
+import (
+	"fmt"	
+	"time"
+)
+// START1 OMIT
+func main() {
+	c := make(chan string)		
+	go echo(c)
+	c <- "Hola"	
+	mensaje := <- c
+	fmt.Println(mensaje) 
+}
+
+func echo(c chan string) {		
+	msg := <- c
+	time.Sleep(time.Second * 5)
+	c <- fmt.Sprintf("Mensaje recibido: %s", msg)		
+}
+// STOP1 OMIT

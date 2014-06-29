@@ -1,0 +1,12 @@
+package main
+
+import "fmt"
+
+func main() {
+	suma, resta := sumaYResta(90, 10)
+	fmt.Println("resultado de la suma ", suma, " de la resta ", resta)
+}
+
+func sumaYResta(x int, y int) (suma int, resta int) {
+	return x + y, x - y
+}

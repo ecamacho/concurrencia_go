@@ -1,0 +1,31 @@
+package main
+
+import (
+	"fmt"
+	"time"
+	"math/rand"
+	)
+
+// START1 OMIT
+func main() {
+	process1 := processExpensiveTransaction()
+	process2 := processExpensiveTransaction()
+	for i := 0; i < 2; i++ {
+		select {
+			case msg1 := <- process1:
+				fmt.Println("Proceso 1 termino con status ", msg1)				
+			case msg2 := <- process2:
+				fmt.Println("Proceso 2 termino con status ", msg2)				
+		}
+	}
+}
+
+func processExpensiveTransaction() chan string {
+	c := make(chan string)
+	go func() {
+		time.Sleep(time.Duration(rand.Intn(6)) * time.Second)
+		c <- "ok"
+	} ()	
+	return c
+}
+// STOP1 OMIT
